@@ -39,13 +39,12 @@ def recortar2(imagen, inicio, anchos, altos):
 
 
 
-def crearsuelo1(imagen,principio,limite,general,suelos):
+def crearsuelo1(imagen,principio,limite,general):
         s=principio
         while(s<limite):
             su=Suelo(imagen)
             su.rect.x+=s
             su.rect.y=418
-            suelos.add(su)
             general.add(su)
             s+=33.3
 
@@ -74,6 +73,49 @@ def crearplataforma3(imagen,n,x,y,general):
         pl.rect.y+=y
         general.add(pl)
         x+=15.5
+
+def crearsuelob1(imagen,principio,limite,generalb1):   #SUELO DEL BONUS 1
+        s=principio
+        while(s<limite):
+            su=Suelo(imagen)
+            su.rect.x+=s
+            su.rect.y=412
+            generalb1.add(su)
+            s+=36.6
+def crearparedb1(imagen,principio,limite,generalb1):
+    s=principio
+    while(s<limite):
+        p=Pared(imagen)
+        p.rect.x=0
+        p.rect.y+=s
+        generalb1.add(p)
+        s+=36.6
+
+def crearsuelob3(imagen,principio,limite,general): #Suelos del BONUS 3
+        s=principio
+        while(s<limite):
+            su=Suelo(imagen)
+            su.rect.x+=s
+            su.rect.y=418.5
+            general.add(su)
+            s+=20
+def crearparedb3(imagen,principio,limite,general):
+    s=principio
+    while(s<limite):
+        p=Pared(imagen)
+        p.rect.x=0
+        p.rect.y+=s
+        general.add(p)
+        s+=36.6
+
+def crearsuelo1(imagen,principio,limite,general):
+        s=principio
+        while(s<limite):
+            su=Suelo(imagen)
+            su.rect.x+=s
+            su.rect.y=418
+            general.add(su)
+            s+=33.3
 
 def recorte(imagen,sp_fil,sp_col):
     #CARGA LA IMAGEN
@@ -260,154 +302,46 @@ class Techo(pygame.sprite.Sprite):
     def update(self):
         self.rect.x+= self.var_x
 
-class Goomba(pygame.sprite.Sprite):
-    def __init__ (self,m):
-        pygame.sprite.Sprite.__init__(self)
-        self.m=m
-        self.dir=0
-        self.x=0
-        self.image=m[self.x][self.dir]
-        self.rect=self.image.get_rect()
-        self.var_x=0
-        self.var_y=0
-        self.tub=[]
-        self.bl=[]
-        self.suelo=[]
+class Jugador(pygame.sprite.Sprite):
+	var_x = 0
+	var_y = 0
+	def __init__(self):
+	    pygame.sprite.Sprite.__init__(self)
+	    ancho = 40
+	    alto = 60
+	    self.image = pygame.Surface([ancho, alto])
+	    self.tubos= []
+	    self.image.fill(ROJO)
+	    self.rect = self.image.get_rect()
+	    self.salto=False
 
-    def gravedad(self):
-        if self.var_y==0:
-            self.var_y=1
-        else:
-            self.var_y+=1.5
+	def gravedad(self):
+		if self.var_y==0:
+			self.var_y=1
+		else:
+			self.var_y+=1.5
 
-    def update(self):
-        self.gravedad()
-        self.x+=self.var_x
-        self.y+=self.var_y
-        ls_coltub=pygame.spritecollide(self,self.tub,False)
-        for elemen in ls_coltub:
-            if var_x>0:
-                var_x=-6
-            else:
-                var_x=6
-        ls_colsuelo=pygame.spritecollide(self,self.tub,False)
-        for elemen in ls_colsuelo:
-            self.rect.y=elemen.rect.y-self.rect[3]
-        ls_colbl=pygame.sprite.Sprite(self,self.bl,False)
-        for elemen in ls_colbl:
-            print "suelo"
-
-class koopatroopa(pygame.sprite.Sprite):
-    def __init__(self,m):
-        pygame.sprite.Sprite.__init__(self)
-        self.var_x=0
-        self.var_y=0
-        self.dir=0
-        self.x=0
-        self.tubos=[]
-        self.suelo=[]
-        self.image=m[self.dir][self.x]
-        self.image.get_rect()
-
-    def gravedad(self):
-        if self.var_y==0:
-            self.var_y=1
-        else:
-            self.var_y+=1.5
-
-    def update(self):
-        self.rect.x+=self.var_x
-        self.rect.y+=self.var_y
-        ls_coltub=pygame.sprite.spritecollide(self,self.tubos,False)
-        for elemen in ls_coltub:
-            if var_x>0:
-                var_x=-6
-            else:
-                var_x=6
-        ls_colsuelo=pygame.sprite.spritecollide(self,self.suelo,False)
-        for elemen in ls_colsuelo:
-            print "suelos"
-
-
-class platacarn(pygame.sprite.Sprite):
-    def __init__(self,m):
-        pygame.sprite.Sprite.__init__(self)
-        self.rect.y=0
-        self.var_y=0
-        self.dir=0
-        self.x=0
-        self.image=m[self.dir][self.x]
-        self.rect=image.get_rect()
-
-    def update(self):
-        """falta implementar"""
-
-class Jugador (pygame.sprite.Sprite):
-    var_x=0
-    var_y=0
-    def __init__(self,m):
-        pygame.sprite.Sprite.__init__(self)
-        self.x=0
-        self.dir=0
-        self.image=m[self.dir][self.x]
-        self.tubos=[]
-        self.piramide=[]
-        self.bl=[]
-        self.pisos=[]
-        self.rect =self.image.get_rect()
-        self.salto=False
-
-    def gravedad(self):
-        if self.var_y==0:
-            self.var_y=1
-        else:
-            self.var_y+=1.5
-
-    def update(self):
-        self.gravedad()
-        self.rect.x+=self.var_x
-        self.rect.y+=self.var_y
-        ls_coltub=pygame.sprite.spritecollide(self,self.tubos,False)
-        for elemen in ls_coltub:
-            self.salto=False
-            if (self.rect.y<elemen.rect.y) and ((self.rect.x+self.rect[2])>elemen.rect.x) and (self.rect.x<elemen.rect.x+elemen.rect[2] and self.var_y>0):
-                self.rect.y=elemen.rect.y-self.rect[3]
-                self.var_y=0
-            elif self.rect.x+self.rect[3]>elemen.rect.x:
-                if self.rect.x<elemen.rect.x:
-                    self.rect.x=elemen.rect.x-self.rect[2]
-                else:
-                    self.rect.x=elemen.rect.x+elemen.rect[2]
-
-        ls_colpir=pygame.sprite.spritecollide(self,self.piramide,False)
-        for elemen in ls_colpir:
-            self.salto=False
-            if (self.rect.x+self.rect[2]>elemen.rect.x) and (self.rect.x<elemen.rect.x+elemen.rect[2] and self.var_y>0):
-                self.rect.y=elemen.rect.y-self.rect[3]
-                self.var_y=0
-            elif self.rect.x+self.rect[3]>elemen.rect.x:
-                if self.rect.x<elemen.rect.x:
-                    self.rect.x=elemen.rect.x-self.rect[2]
-                else:
-                    self.rect.x=elemen.rect.x+elemen.rect[2]
-                self.var_=0
-
-        """ls_colbloquesn=pygame.sprite.spritecollide(self,self.bl,False)
-        for elemen in ls_colbloquesn:
-            print "pol"
-            #self.rect.y=elemen.rect.y-self.rect[3]
-            #self.salto=False
-        ls_colsuelo=pygame.sprite.spritecollide(self,self.pisos,False)
-        for elemen in ls_colsuelo:
-            print "ilo"""
-        if self.rect.y>ALTO-60:
-            self.var_y=0
-            self.rect.y=ALTO-60
-            self.salto=False
-        if self.rect.x<0:
-            self.rect.x=0
-        print "lol"
-
+	def update(self):
+		self.gravedad()
+		self.rect.x+=self.var_x
+		self.rect.y+=self.var_y
+		ls_coltub=pygame.sprite.spritecollide(self,self.tubos,False)
+		for elemen in ls_coltub:
+			self.salto=False
+			if (self.rect.y<elemen.rect.y) and (self.rect.x+self.rect[2]>elemen.rect.x) and (self.rect.x<elemen.rect.x+elemen.rect[2] and self.var_y>0):
+				self.rect.y=elemen.rect.y-self.rect[3]
+				self.var_y=0
+			elif self.rect.x+self.rect[3]>elemen.rect.x:
+				if self.rect.x<elemen.rect.x:
+					self.rect.x=elemen.rect.x-self.rect[2]
+				else:
+					self.rect.x=elemen.rect.x+elemen.rect[2]
+		if self.rect.y>ALTO-120:
+			self.var_y=0
+			self.rect.y=ALTO-120
+			self.salto=False
+		if self.rect.x<0:
+			self.rect.x=0
 
 if __name__ == '__main__':
     pygame.init()
@@ -429,27 +363,14 @@ if __name__ == '__main__':
     fondob1= pygame.image.load('Nivelbonusn1.png')
     fondofinalb1=pygame.image.load('N1BONUS.png')
 
+    fondob3= pygame.image.load('Nivelbonusn2.png')
+    fondofinalb3=pygame.image.load('N2bonus.png')
+
     fondon3p= pygame.image.load('Nivelfinalprincesa.png')
     fondofinaln3p=pygame.image.load('Nivel3princes.png')
 
-    #CARGAR IMAGENES DE TODOS LOS PERSONAJES
-    marioimg= recorte('mariofull.png',1,21)
-    mariofireimg= recorte('mariofirefull.png',1,21)
-    mariopeqimg= recorte('mariopeq.png',1,14)
-    mariopeqfireimg= recorte('mariofirepeq.png',1,14)
-    goombaimg= recorte('goomba.png',1,9)
-    koopatroopaimg= recorte('koopatroopa.png',1,18)
-    plantacimg= recorte('plantac.png',1,2)
-    hongosimg=recorte('hongos.png',1,9)
-    """estrellasimg=pygame.image.load('estrellas.png')
-    signosimg=pygame.image.load('signos.png')"""
-    florimg=recorte('flor.png',1,16)
-    calamarimg=recorte('calamar.png',1,2)
-    pezimg=recorte('pez.png',1,2)
-    kingfireimg=recorte('kingfire.png',2,1)
-    fireupimg=recorte('fireup.png',1,1)
-    tortugapimg=recorte('tortugap.png',1,4)
-    browserimg=recorte('browser.png',1,4)
+    fondob3= pygame.image.load('Nivelbonusn2.png')
+    fondofinalb3=pygame.image.load('N1BONUS.png')
     
     #pantalla.blit(fondofinaln3,[0,0])
     #CREAR GRUPOS :)
@@ -500,20 +421,19 @@ if __name__ == '__main__':
 
     fuegosn3=pygame.sprite.Group()
     fuegosn3p=pygame.sprite.Group()
-    piramide=pygame.sprite.Group()
 
     #**********************************************************RECORTES NIVEL1********************************************************
 
     #Recorto el suelo
     suelo=recortar2(fondon1,[0,418],[33.3],[50])
     #primer suelo
-    crearsuelo1(suelo,0,2290,generaln1,suelosn1)
+    crearsuelo1(suelo,0,2290,generaln1)
     #suelo despues del primero precipicio
-    crearsuelo1(suelo,2370.8,2870,generaln1,suelosn1)
+    crearsuelo1(suelo,2370.8,2870,generaln1)
     #suelo despues del segundo principio
-    crearsuelo1(suelo,2972.8,5100,generaln1,suelosn1)
+    crearsuelo1(suelo,2972.8,5100,generaln1)
     #suelo despues del tercer precipicio
-    crearsuelo1(suelo,5175.8,7060,generaln1,suelosn1)
+    crearsuelo1(suelo,5175.8,7060,generaln1)
 
     #Recortar Tubos
     #Tubo1
@@ -633,7 +553,6 @@ if __name__ == '__main__':
         bl2=Bloque2(bloque2)
         bl2.rect.x+=x
         bl2.rect.y=283
-        bloques1n1.add(bl2)
         generaln1.add(bl2)
         x+=67
 
@@ -644,7 +563,6 @@ if __name__ == '__main__':
         bl2=Bloque2(bloque2)
         bl2.rect.x+=x
         bl2.rect.y=283
-        bloques1n1.add(bl2)
         generaln1.add(bl2)
         x+=67
 
@@ -654,7 +572,6 @@ if __name__ == '__main__':
         bl2=Bloque2(bloque2)
         bl2.rect.x+=x
         bl2.rect.y=149
-        bloques1n1.add(bl2)
         generaln1.add(bl2)
         x+=34
 
@@ -665,14 +582,12 @@ if __name__ == '__main__':
         bl2=Bloque2(bloque2)
         bl2.rect.x+=x
         bl2.rect.y=149
-        bloques1n1.add(bl2)
         generaln1.add(bl2)
         x+=34
 
     bl2=Bloque2(bloque2)
     bl2.rect.x=3138
     bl2.rect.y=283
-    bloques1n1.add(bl2)
     generaln1.add(bl2)
 
     #CUARTA FILA DE BLOQUES
@@ -682,7 +597,6 @@ if __name__ == '__main__':
         bl2=Bloque2(bloque2)
         bl2.rect.x+=x
         bl2.rect.y=283
-        bloques1n1.add(bl2)
         generaln1.add(bl2)
         x+=34
 
@@ -690,7 +604,6 @@ if __name__ == '__main__':
     l2=Bloque2(bloque2)
     bl2.rect.x=3939
     bl2.rect.y=283
-    bloques1n1.add(bl2)
     generaln1.add(bl2)
 
     n=3
@@ -699,7 +612,6 @@ if __name__ == '__main__':
         bl2=Bloque2(bloque2)
         bl2.rect.x+=x
         bl2.rect.y=150
-        bloques1n1.add(bl2)
         generaln1.add(bl2)
         x+=34
 
@@ -710,7 +622,6 @@ if __name__ == '__main__':
         bl2=Bloque2(bloque2)
         bl2.rect.x+=x
         bl2.rect.y=150
-        bloques1n1.add(bl2)
         generaln1.add(bl2)
         x+=102
 
@@ -720,7 +631,6 @@ if __name__ == '__main__':
         bl2=Bloque2(bloque2)
         bl2.rect.x+=x
         bl2.rect.y=283
-        bloques1n1.add(bl2)
         generaln1.add(bl2)
         x+=34
 
@@ -731,13 +641,11 @@ if __name__ == '__main__':
         bl2=Bloque2(bloque2)
         bl2.rect.x+=x
         bl2.rect.y=283
-        bloques1n1.add(bl2)
         generaln1.add(bl2)
         x+=34
     bl2=Bloque2(bloque2)
     bl2.rect.x=5711
     bl2.rect.y=283
-    bloques1n1.add(bl2)
     generaln1.add(bl2)
 
     #********************************PIRAMIDES DE BLOQUES*************************
@@ -753,7 +661,6 @@ if __name__ == '__main__':
             cuadr=Bloque3(cuadro)
             cuadr.rect.x+=x
             cuadr.rect.y+=y
-            piramide.add(cuadr)
             generaln1.add(cuadr)
             x-=34
         x=4574
@@ -770,7 +677,6 @@ if __name__ == '__main__':
             cuadr=Bloque3(cuadro)
             cuadr.rect.x+=x
             cuadr.rect.y+=y
-            piramide.add(cuadr)
             generaln1.add(cuadr)
             x+=34
         x=4674
@@ -785,7 +691,6 @@ if __name__ == '__main__':
             cuadr=Bloque3(cuadro)
             cuadr.rect.x+=x
             cuadr.rect.y+=y
-            piramide.add(cuadr)
             generaln1.add(cuadr)
             x+=34
         x=5175
@@ -802,13 +707,11 @@ if __name__ == '__main__':
             cuadr=Bloque3(cuadro)
             cuadr.rect.x+=x
             cuadr.rect.y+=y
-            piramide.add(cuadr)
             generaln1.add(cuadr)
             x-=34
         cuadr=Bloque3(cuadro)
         cuadr.rect.x+=x
         cuadr.rect.y+=y
-        piramide.add(cuadr)
         generaln1.add(cuadr)
         x=5075
         y-=33
@@ -823,13 +726,11 @@ if __name__ == '__main__':
             cuadr=Bloque3(cuadro)
             cuadr.rect.x+=x
             cuadr.rect.y+=y
-            piramide.add(cuadr)
             generaln1.add(cuadr)
             x-=34
         cuadr=Bloque3(cuadro)
         cuadr.rect.x+=x
         cuadr.rect.y+=y
-        piramide.add(cuadr)
         generaln1.add(cuadr)
         x=6311
         y-=33
@@ -837,7 +738,6 @@ if __name__ == '__main__':
     cuadr=Bloque3(cuadro)
     cuadr.rect.x=6611
     cuadr.rect.y=383
-    piramide.add(cuadr)
     generaln1.add(cuadr)
 
     #****************Recortar la bandera******************
@@ -852,13 +752,13 @@ if __name__ == '__main__':
     #Recorto el suelo
     suelo=recortar2(fondon2,[0,418],[33.3],[50])
     #primer suelo
-    crearsuelo1(suelo,0,2650,generaln2,suelosn2)
+    crearsuelo1(suelo,0,2650,generaln2)
     #suelo despues del primero precipicio
-    crearsuelo1(suelo,2743.8,4100,generaln2,suelosn2)
+    crearsuelo1(suelo,2743.8,4100,generaln2)
     #suelo despues del segundo principio
-    crearsuelo1(suelo,4181.8,4270,generaln2,suelosn2)
+    crearsuelo1(suelo,4181.8,4270,generaln2)
     #suelo despues del tercer precipicio
-    crearsuelo1(suelo,4350.8,7425,generaln2,suelosn2)
+    crearsuelo1(suelo,4350.8,7425,generaln2)
 
     #Recortar Tubos
     #Tubo1
@@ -900,7 +800,6 @@ if __name__ == '__main__':
     cu=Bloque3(cuadro)
     cu.rect.x=1639
     cu.rect.y=384
-    piramide.add(cu)
     generaln2.add(cu)
 
     #primer pilar de blques
@@ -911,7 +810,6 @@ if __name__ == '__main__':
         cu=Bloque3(cuadro)
         cu.rect.x+=x
         cu.rect.y+=y
-        piramide.add(cu)
         generaln2.add(cu)
         y+=33
 
@@ -923,7 +821,6 @@ if __name__ == '__main__':
         cu=Bloque3(cuadro)
         cu.rect.x+=x
         cu.rect.y+=y
-        piramide.add(cu)
         generaln2.add(cu)
         y+=33
 
@@ -935,7 +832,6 @@ if __name__ == '__main__':
         cu=Bloque3(cuadro)
         cu.rect.x+=x
         cu.rect.y+=y
-        piramide.add(cu)
         generaln2.add(cu)
         y+=33
 
@@ -947,7 +843,6 @@ if __name__ == '__main__':
         cu=Bloque3(cuadro)
         cu.rect.x+=x
         cu.rect.y+=y
-        piramide.add(cu)
         generaln2.add(cu)
         y+=33
 
@@ -961,13 +856,11 @@ if __name__ == '__main__':
             cuadr=Bloque3(cuadro)
             cuadr.rect.x+=x
             cuadr.rect.y+=y
-            piramide.add(cuadr)
             generaln2.add(cuadr)
             x-=34
         cuadr=Bloque3(cuadro)
         cuadr.rect.x+=x
         cuadr.rect.y+=y
-        piramide.add(cuadr)
         generaln2.add(cuadr)
         x=6692
         y-=33
@@ -976,7 +869,6 @@ if __name__ == '__main__':
     cuadr=Bloque3(cuadro)
     cuadr.rect.x=6993
     cuadr.rect.y=384
-    piramide.add(cuadr)
     generaln2.add(cuadr)
 
     #****************Recortar la bandera******************
@@ -984,7 +876,6 @@ if __name__ == '__main__':
     b=Bandera(band)
     b.rect.x=6977
     b.rect.y=85
-    piramide.add(cuadr)
     generaln2.add(b)
 
 
@@ -1252,44 +1143,114 @@ if __name__ == '__main__':
     crearplataforma3(suelop,53,5978,317,generaln3)
     crearplataforma3(suelop,53,5978,367,generaln3)
 
+    #***************************************************+CREAR NIVEL BONUS 3*******************
+    #*****CREAR SUELO*****
+    suelo=recortar2(fondob3,[0,418],[20],[50])
+    crearsuelob3(suelo,0,2504,generalb3)
+    
+    #suelo que sobresale (muro)
+    suelo=recortar2(fondob3,[199,317],[403],[99])
+    mu=Suelo(suelo)
+    mu.rect.x=199
+    mu.rect.y=317
+    generalb3.add(mu)
 
-    #******************************CREACION DEL JUGADOR*********************************
-    Mario=Jugador(mariopeqimg)
+    suel=recortar2(fondob3,[366,284],[235],[32])
+    mu=Suelo(suel)
+    mu.rect.x=366
+    mu.rect.y=284
+    generalb3.add(mu)
+
+    #MURO ARRIBA EN LA MITAD
+    mur=recortar2(fondob3,[1302,82],[100],[100])
+    mur=Techo(mur)
+    mur.rect.x=1302
+    mur.rect.y=82  
+    generalb3.add(mur)
+
+    #MURO ABAJO EN LA MITAD
+    mur=recortar2(fondob3,[1302,317],[100],[100])
+    mur=Techo(mur)
+    mur.rect.x=1302
+    mur.rect.y=317
+    generalb3.add(mur)
+
+    #creo paredes izquierda y derecha
+    paredizq=recortar2(fondob3,[0,50],[65],[366])
+    p=Pared(paredizq)
+    p.rect.x=0
+    p.rect.y=50
+    generalb3.add(p)
+
+    paredder=recortar2(fondob3,[2304,50],[101],[366])
+    p=Pared(paredder)
+    p.rect.x=2304
+    p.rect.y=50
+    generalb3.add(p)
+
+    #Pared derecha abajo del tubo verde
+    paredder=recortar2(fondob3,[2237,283],[35],[134])
+    p=Pared(paredder)
+    p.rect.x=2237
+    p.rect.y=283
+    generalb3.add(p)
+
+    #Pared derecha arriba del tubo verde
+    paredder=recortar2(fondob3,[2237,82],[66],[100])
+    p=Pared(paredder)
+    p.rect.x=2237
+    p.rect.y=82
+    generalb3.add(p)
+
+
+    #********CREAR TECHO*******
+    techo=recortar2(fondob3,[200,49],[2205],[33])
+    tc=Techo(techo)
+    tc.rect.x=66
+    tc.rect.y=49
+    generalb3.add(tc)
+
+    techo2=recortar2(fondob3,[200,82],[400],[67])
+    tc=Techo(techo2)
+    tc.rect.x=200
+    tc.rect.y=82
+    generalb3.add(tc)
+
+    techo=recortar2(fondob3,[366,149],[234],[33])
+    tc=Techo(techo)
+    tc.rect.x=366
+    tc.rect.y=149
+    generalb3.add(tc)
+
+    #******CREAR TUBOS********
+    tubo1=recortar2(fondob3,[100,351],[66],[116])
+    tub=Tubo(tubo1)
+    tub.rect.x=100
+    tub.rect.y=351
+    tubosb3.add(tub)
+    generalb3.add(tub)
+
+
+
+    Mario=Jugador()
     Mario.tubos=tubosn1
-    Mario.piramide=piramide
-    Mario.bl=bloques1n1
-    Mario.pisos=suelosn1
     Mario.rect.x=100
-    Mario.rect.y=339
-    Mario.dir=0
-    Mario.x=0
+    Mario.rect.y=300
+
     generalsinMario=pygame.sprite.Group()
 
     for e in generaln1:
     	generalsinMario.add(e)
 
     generaln1.add(Mario)
-
-    #*****************************CREACION DE LOS ENEMIGOS*********************************
-
-    Goomba1N1=Goomba(goombaimg)
-    Goomba1N1.rect.x=200
-    Goomba1N1.rect.y=300
-    Goomba1N1.var_x=3
-    Goomba1N1.tub=tubosn1
-    Goomba1N1.bl=bloques1n1
-    Goomba1N1.suelo=suelosn1
-    generaln1.add(Goomba1N1)
     
     fin=False
     mov=False
     mov1=False
     varp_x=0
-    posx_p=-300
+    posx_p=0
     reloj=pygame.time.Clock()
     print len(tubosn1)
-    j=0
-    k=0
     while not fin:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -1330,6 +1291,7 @@ if __name__ == '__main__':
         	e.var_x=varp_x
         generaln1.update()            
         generaln1.draw(pantalla)
+        #tubosn3.draw(pantalla)
+        #fuegosn3.draw(pantalla)
         pygame.display.flip()
-        #print "lolp"
-        reloj.tick(300)
+        reloj.tick(60)
