@@ -301,6 +301,96 @@ class Techo(pygame.sprite.Sprite):
 
     def update(self):
         self.rect.x+= self.var_x
+	
+	
+class Goomba(pygame.sprite.Sprite):
+    def __init__ (self,m):
+        pygame.sprite.Sprite.__init__(self)
+        self.m=m
+        self.dir=0
+        self.x=0
+        self.image=m[self.x][self.dir]
+        self.rect=self.image.get_rect()
+        self.var_x=0
+        self.var_y=0
+        self.tub=[]
+        self.bl=[]
+        self.suelo=[]
+
+    def gravedad(self):
+        if self.var_y==0:
+            self.var_y=1
+        else:
+            self.var_y+=1.5
+
+    def update(self):
+        self.gravedad()
+        self.rect.x+=self.var_x
+        self.rect.y+=self.var_y
+        ls_coltub=pygame.sprite.spritecollide(self,self.tub,False)
+        for elemen in ls_coltub:
+            if self.var_x>0:
+                var_x=-6
+            else:
+                self.var_x=6
+        ls_colsuelo=pygame.sprite.spritecollide(self,self.tub,False)
+        for elemen in ls_colsuelo:
+            self.rect.y=elemen.rect.y-self.rect[3]
+        ls_colbl=pygame.sprite.spritecollide(self,self.bl,False)
+        for elemen in ls_colbl:
+            print "suelo"
+
+        if self.rect.y>ALTO:
+            self.var_y=0
+            self.rect.y=ALTO-60
+            self.salto=False
+        if self.rect.x<0:
+            self.rect.x=0
+
+class koopatroopa(pygame.sprite.Sprite):
+    def __init__(self,m):
+        pygame.sprite.Sprite.__init__(self)
+        self.var_x=0
+        self.var_y=0
+        self.dir=0
+        self.x=0
+        self.tubos=[]
+        self.suelo=[]
+        self.image=m[self.dir][self.x]
+        self.image.get_rect()
+
+    def gravedad(self):
+        if self.var_y==0:
+            self.var_y=1
+        else:
+            self.var_y+=1.5
+
+    def update(self):
+        self.rect.x+=self.var_x
+        self.rect.y+=self.var_y
+        ls_coltub=pygame.sprite.spritecollide(self,self.tubos,False)
+        for elemen in ls_coltub:
+            if var_x>0:
+                var_x=-6
+            else:
+                var_x=6
+        ls_colsuelo=pygame.sprite.spritecollide(self,self.suelo,False)
+        for elemen in ls_colsuelo:
+            print "suelos"
+
+
+class platacarn(pygame.sprite.Sprite):
+    def __init__(self,m):
+        pygame.sprite.Sprite.__init__(self)
+        self.rect.y=0
+        self.var_y=0
+        self.dir=0
+        self.x=0
+        self.image=m[self.dir][self.x]
+        self.rect=image.get_rect()
+
+    def update(self):
+        """falta implementar"""
 
 class Jugador(pygame.sprite.Sprite):
 	var_x = 0
@@ -1232,25 +1322,26 @@ if __name__ == '__main__':
 
 
 
-    Mario=Jugador()
-    Mario.tubos=tubosn1
-    Mario.rect.x=100
-    Mario.rect.y=300
+       #*****************************CREACION DE LOS ENEMIGOS*********************************
 
-    generalsinMario=pygame.sprite.Group()
-
-    for e in generaln1:
-    	generalsinMario.add(e)
-
-    generaln1.add(Mario)
+    Goomba1N1=Goomba(goombaimg)
+    Goomba1N1.rect.x=200
+    Goomba1N1.rect.y=300
+    Goomba1N1.var_x=3
+    Goomba1N1.tub=tubosn1
+    Goomba1N1.bl=bloques1n1
+    Goomba1N1.suelo=suelosn1
+    generaln1.add(Goomba1N1)
     
     fin=False
     mov=False
     mov1=False
     varp_x=0
-    posx_p=0
+    posx_p=-300
     reloj=pygame.time.Clock()
     print len(tubosn1)
+    j=0
+    k=0
     while not fin:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -1259,6 +1350,7 @@ if __name__ == '__main__':
                 if event.key == pygame.K_LEFT:
                     Mario.var_x=-6
                     mov1=True
+                    Mario.limite=
                 if event.key == pygame.K_RIGHT:
                     Mario.var_x=6
                     mov=True 
@@ -1291,7 +1383,6 @@ if __name__ == '__main__':
         	e.var_x=varp_x
         generaln1.update()            
         generaln1.draw(pantalla)
-        #tubosn3.draw(pantalla)
-        #fuegosn3.draw(pantalla)
         pygame.display.flip()
-        reloj.tick(60)
+        #print "lolp"
+        reloj.tick(300)
