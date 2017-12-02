@@ -461,6 +461,25 @@ if __name__ == '__main__':
 
     fondob3= pygame.image.load('Nivelbonusn2.png')
     fondofinalb3=pygame.image.load('N1BONUS.png')
+	
+#CARGAR IMAGENES DE TODOS LOS PERSONAJES
+    marioimg= recorte('mariofull.png',1,21)
+    mariofireimg= recorte('mariofirefull.png',1,21)
+    mariopeqimg= recorte('mariopeq.png',1,14)
+    mariopeqfireimg= recorte('mariofirepeq.png',1,14)
+    goombaimg= recorte('goomba.png',1,9)
+    koopatroopaimg= recorte('koopatroopa.png',1,18)
+    plantacimg= recorte('plantac.png',1,2)
+    hongosimg=recorte('hongos.png',1,9)
+    """estrellasimg=pygame.image.load('estrellas.png')
+    signosimg=pygame.image.load('signos.png')"""
+    florimg=recorte('flor.png',1,16)
+    calamarimg=recorte('calamar.png',1,2)
+    pezimg=recorte('pez.png',1,2)
+    kingfireimg=recorte('kingfire.png',2,1)
+    fireupimg=recorte('fireup.png',1,1)
+    tortugapimg=recorte('tortugap.png',1,4)
+    browserimg=recorte('browser.png',1,4)
     
     #pantalla.blit(fondofinaln3,[0,0])
     #CREAR GRUPOS :)
