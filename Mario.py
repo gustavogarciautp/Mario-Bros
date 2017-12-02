@@ -1338,7 +1338,23 @@ if __name__ == '__main__':
     tub.rect.y=351
     tubosb3.add(tub)
     generalb3.add(tub)
+ 
+ #******************************CREACION DEL JUGADOR*********************************
+    Mario=Jugador(mariopeqimg)
+    Mario.tubos=tubosn1
+    Mario.piramide=piramide
+    Mario.bl=bloques1n1
+    Mario.pisos=suelosn1
+    Mario.rect.x=100
+    Mario.rect.y=439
+    Mario.dir=0
+    Mario.x=0
+    generalsinMario=pygame.sprite.Group()
 
+    for e in generaln1:
+    	generalsinMario.add(e)
+
+    generaln1.add(Mario)
 
 
        #*****************************CREACION DE LOS ENEMIGOS*********************************
